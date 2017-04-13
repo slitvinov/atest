@@ -1,0 +1,161 @@
+#!/usr/bin/awk -f
+#
+# Better testing framework
+# See atest.example.sh for an example
+
+BEGIN {
+    RDIR="test_data" # directory with reference files
+    system("mkdir -p " RDIR)
+    ipass = ifail = icreated = 0 # counters
+}
+
+function emptyp(s) { return s ~ /^[ \t]*$/ }
+
+function after_comm(s,   i) { # returns a part of a string after `#'
+    ICOMM = index(s, "#")     # sets global ICOMM: position of a first `#'
+    return substr(s, ICOMM + 1)
+}
+
+function begp(s,  a) { # is beginning of a test? sets `NAME' and
+		       # returns `TYPE' of a test
+    s = after_comm(s)
+    if (ICOMM == 0) return 0
+    split(s, a); s = a[1]
+    if      (s ==  "TEST:") {NAME = a[2]; return  "TEST"}
+    else if (s == "cTEST:") {NAME = a[2]; return "cTEST"} # create
+    else                                  return 0
+}
+
+function endp(s) { # is end of a test?
+    s = after_comm(s)
+    if (ICOMM == 0 || emptyp(s)) return 1 # not a comment or empty
+					  # line end test
+}
+
+function find_magic(base,  nb, d) { # a name of magic file *.base.*
+    nb = "[^ \\t\\n]*" # zero or more non-blanks
+    d  = "\\."        # dot
+    match(BODY, nb d base d nb)
+    return substr(BODY, RSTART, RLENGTH)
+}
+
+function process() {
+    out  = find_magic("out")
+    hash = find_magic("hash")
+
+    if      (TYPE ==  "TEST") run_test(out, hash)
+    else if (TYPE == "cTEST") create_test(out, hash)
+}
+
+function run_test(out, hash) {
+    Test(out, hash)
+    msg(" RUNNING: " NAME)
+    if (!run()) {
+	ipass++
+	msg(" PASSED : " NAME)
+    } else {
+	lfail[++ifail] = NAME # a list of failed test names
+	msg(" FAILED : " NAME)
+	msg(" Test body:\n\n" BODY)
+	if (emptyp(hash))
+	    msg(" Files : `" out "` and `" out2ref(out) "` are different")
+	else {
+	    msg(" Files  : `" hash "` and `" hash2ref(hash) "` are different")
+	    msg(" Outputs: `" out "` and `" out2out(out) "`")
+	}
+    }
+}
+
+function create_test(out, hash) {
+    cTest(out, hash)
+    msg(" CREATING: " NAME)
+    msg("        Script body:\n\n" BODY)
+    run() # TODO: check if ref was created
+    icreated++
+}
+
+function out2hash(s,   d) {
+    d  = "\\."        # dot
+    sub(d "out" d, ".hash.", s)
+    return s
+}
+
+function out2out(s) {
+    d  = "\\."        # dot
+    sub(d "out" d,   ".out." NAME ".",    s)
+    return RDIR "/" s
+}
+
+function out2ref(s) {
+    d  = "\\."        # dot
+    sub(d "out" d,   ".ref." NAME ".",    s)
+    return RDIR "/" s
+}
+
+function hash2ref(s) {
+    d  = "\\."        # dot
+    sub(d "hash" d,   ".ref." NAME ".",    s)
+    return RDIR "/" s
+}
+
+
+function cp(A, B,  cmd) {
+    cmd = sprintf("cp -- %s %s\n", A, B)
+    BODY = BODY cmd
+}
+
+function cmp(A, B,  cmd) {
+    cmd = sprintf("cmp -s -- %s %s\n", A, B)
+    BODY = BODY cmd
+}
+
+function cTest(out, hash) { # add commands to BODY
+    BODY = BODY "\n\n"
+    if (emptyp(hash)) {
+	cp(out, out2ref(out)) # use out as ref
+    } else {
+	cp(out,  out2out(out))
+	cp(hash, hash2ref(hash)) # use hash as ref
+    }
+}
+
+function Test(out, hash,    ref) { # add commands to BODY
+    BODY = BODY "\n\n"
+    if (emptyp(hash)) cmp(out ,  out2ref(out))
+    else              cmp(hash, hash2ref(hash))
+}
+
+function process_all(  I, sep) {
+    I = 1 # position in a file
+    while (I <= NR) {
+	while (I <= NR) if (TYPE = begp(F[I++])) break
+	if (!(I <= NR) ) break
+
+	BODY = sep = ""
+	while (I <= NR) {
+	    if (endp(line = F[I++])) break
+	    BODY = BODY sep after_comm(line)
+	    sep  = RS
+	}
+	process() # uses `TYPE', `NAME', `BODY'
+    }
+}
+
+function summary(  i) {
+    msg(sprintf(" %d/%d test(s) passed", ipass, ipass+ifail))
+    if (icreated) msg(sprintf("   %d test(s) created", icreated))
+    if (ifail) {
+	msg(" failed tests:")
+	for (i = 1; i <= ifail; i++) msg("    " lfail[i])
+    }
+}
+
+{ F[NR] = $0 } # store every line in array
+END {
+    process_all() # extract and run all tests
+    summary()
+}
+
+function run()  { return system(BODY) }
+function msg(s) { printf "(atest)%s\n", s | "cat 1>&1" }
+function die(s) {msg(s); exit(1)}
