@@ -1,0 +1,37 @@
+#!/usr/bin/awk -f
+
+# cmp for numbers
+
+function ini() { eps = zerop(eps) ? 0.1 : eps }
+
+function endp(r) { return !(r > 0 ) }
+function max(a, b) { return a > b ? a : b }
+function abs(a) { return a >= 0 ? a : -a }
+
+function cmp(   r1, r2, n1, n2, n, i, bad, fmt) {
+    fmt = "%f1 %f2 differ: line  %i1 (%a1 !~ %a2)"
+    gsub(/%[A-Za-z0-9]+/, "%s", fmt)
+    for (;;) {
+	r1 = getline l1 < f1; i1++
+	r2 = getline l2 < f2; i2++
+	if (endp(r1) && endp(r2)) return 0
+	if (endp(r1)) die("EOF on " f1)
+	if (endp(r2)) die("EOF on " f2)
+
+	n = max(n1 = split(l1, a1), n2 = split(l2, a2))
+	for (i = 1; i <= n; i++) {
+	    bad = i > n1 || i > n2 || abs(a1[i] - a2[i]) > eps
+	    if (bad) die(sprintf(fmt, f1, f2, i1, a1[i], a2[i]))
+	}
+    }
+}
+
+BEGIN {
+    ini()
+    f1 = ARGV[1]
+    f2 = ARGV[2]
+    cmp()
+}
+
+function die(s) { print "ucmp: " s | "cat 2>&1"; exit 1 }
+function zerop(s) { return !length(s) }
