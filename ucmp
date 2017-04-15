@@ -1,27 +1,9 @@
 #!/bin/bash
 
-# cmp for numbers
-# TEST: ucmp.t0
-# echo 1.01 > A; echo 1 > B
-# ./ucmp A B && echo true   > ucmp.out.txt
+# ucmp - compare two file with numbers
+# ucmp [option] file1 file2
 #
-# TEST: ucmp.t1
-# echo 1.01 > A; echo 1 > B
-# ./ucmp A B && echo true   > ucmp.out.txt
-#
-# TEST: ucmp.t2
-# echo 1.01 > A; echo 1 > B
-# ./ucmp -e 0.001 A B || echo false > ucmp.out.txt
-#
-# TEST: ucmp.t3
-# echo '1 2 3
-#4 5 6
-#7 8 9' > A
-# echo '1 2 3
-#4 5.4 6
-#7 8 9' > B
-# ./ucmp A B || echo false > ucmp.out.txt
-
+# -e epsion    compare with abs(A-B) < diff (default: 0.1)
 
 awk '
 function ini() {
@@ -70,3 +52,25 @@ function die(s) { print "ucmp: " s | "cat 2>&1"; exit 1 }
 function zerop(s) { return length(s) == 0}
 function bl(s)   { return zerop(s) ? "<blank>" : s }
 ' "$@"
+
+# cmp for numbers
+# TEST: ucmp.t0
+# echo 1.01 > A; echo 1 > B
+# ./ucmp A B && echo true   > ucmp.out.txt
+#
+# TEST: ucmp.t1
+# echo 1.01 > A; echo 1 > B
+# ./ucmp A B && echo true   > ucmp.out.txt
+#
+# TEST: ucmp.t2
+# echo 1.01 > A; echo 1 > B
+# ./ucmp -e 0.001 A B || echo false > ucmp.out.txt
+#
+# TEST: ucmp.t3
+# echo '1 2 3
+#4 5 6
+#7 8 9' > A
+# echo '1 2 3
+#4 5.4 6
+#7 8 9' > B
+# ./ucmp A B || echo false > ucmp.out.txt
