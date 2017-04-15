@@ -21,8 +21,10 @@ function begp(s,  a) { # is beginning of a test? sets `NAME' and
     s = after_comm(s)
     if (ICOMM == 0) return 0
     split(s, a); s = a[1]
-    if      (s ==  "TEST:") {NAME = a[2]; return  "TEST"}
-    else if (s == "cTEST:") {NAME = a[2]; return "cTEST"} # create
+    if      (s ==  "TEST:") {NAME = a[2]; return   "TEST"}
+    else if (s == "cTEST:") {NAME = a[2]; return  "cTEST"} # create
+    else if (s ==  "TEST:") {NAME = a[2]; return  "nTEST"} # run numeric test
+    else if (s == "cTEST:") {NAME = a[2]; return "cnTEST"} # create numeric test
     else                                  return 0
 }
 
@@ -43,14 +45,16 @@ function process() {
     out  = find_magic("out")
     hash = find_magic("hash")
 
-    if      (TYPE ==  "TEST") run_test(out, hash)
-    else if (TYPE == "cTEST") create_test(out, hash)
+    if      (TYPE ==   "TEST") {CMP =  "cmp"; run(out, hash)}
+    else if (TYPE ==  "cTEST") {CMP =  "cmp"; create(out, hash)}
+    else if (TYPE ==  "nTEST") {CMP = "ucmp"; create(out, hash)}
+    else if (TYPE == "cnTEST") {CMP = "ucmp"; create(out, hash)}
 }
 
-function run_test(out, hash) {
+function run(out, hash) {
     Test(out, hash)
     msg(" RUNNING: " NAME)
-    if (!run()) {
+    if (!exec()) {
 	ipass++
 	msg(" PASSED : " NAME)
     } else {
@@ -66,11 +70,11 @@ function run_test(out, hash) {
     }
 }
 
-function create_test(out, hash) {
+function create(out, hash) {
     cTest(out, hash)
     msg(" CREATING: " NAME)
     msg("        Script body:\n\n" BODY)
-    run() # TODO: check if ref was created
+    exec() # TODO: check if ref was created
     icreated++
 }
 
@@ -105,7 +109,7 @@ function cp(A, B,  cmd) {
 }
 
 function cmp(A, B,  cmd) {
-    cmd = sprintf("cmp -s -- %s %s\n", A, B)
+    cmd = sprintf("%s -s -- %s %s\n", CMP, A, B)
     BODY = BODY cmd
 }
 
@@ -150,12 +154,16 @@ function summary(  i) {
     }
 }
 
+BEGIN {
+    CMP = "cmp"
+}
+
 { F[NR] = $0 } # store every line in array
 END {
     process_all() # extract and run all tests
     summary()
 }
 
-function run()  { return system(BODY) }
+function exec()  { return system(BODY) }
 function msg(s) { printf "(atest)%s\n", s | "cat 1>&1" }
 function die(s) {msg(s); exit(1)}
