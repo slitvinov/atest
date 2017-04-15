@@ -1,7 +1,7 @@
 #!/usr/bin/awk -f
 #
 # Better testing framework
-# See atest.example.sh for an example
+# See atest.example.sh
 
 BEGIN {
     RDIR="test_data" # directory with reference files
