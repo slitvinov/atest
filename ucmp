@@ -4,6 +4,9 @@
 # ucmp [option] file1 file2
 #
 # -e epsion    compare with abs(A-B) < diff (default: 0.1)
+#
+# SEE ALSO
+#        udiff
 
 awk '
 function ini() {
@@ -53,7 +56,6 @@ function zerop(s) { return length(s) == 0}
 function bl(s)   { return zerop(s) ? "<blank>" : s }
 ' "$@"
 
-# cmp for numbers
 # TEST: ucmp.t0
 # echo 1.01 > A; echo 1 > B
 # ./ucmp A B && echo true   > ucmp.out.txt
