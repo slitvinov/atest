@@ -21,11 +21,10 @@ function begp(s,  a) { # is beginning of a test? sets `NAME' and
     s = after_comm(s)
     if (ICOMM == 0) return 0
     split(s, a); s = a[1]
-    if      (s ==  "TEST:") {NAME = a[2]; return   "TEST"}
-    else if (s == "cTEST:") {NAME = a[2]; return  "cTEST"} # create
-    else if (s ==  "TEST:") {NAME = a[2]; return  "nTEST"} # run numeric test
-    else if (s == "cTEST:") {NAME = a[2]; return "cnTEST"} # create numeric test
-    else                                  return 0
+    if      (s ==   "TEST:") {NAME = a[2]; return s}
+    else if (s ==  "cTEST:") {NAME = a[2]; return s} # create
+    else if (s ==  "nTEST:") {NAME = a[2]; return s} # run numeric test
+    else                                   return 0
 }
 
 function endp(s) { # is end of a test?
@@ -45,10 +44,9 @@ function process() {
     out  = find_magic("out")
     hash = find_magic("hash")
 
-    if      (TYPE ==   "TEST") {CMP =  "cmp"; run(out, hash)}
-    else if (TYPE ==  "cTEST") {CMP =  "cmp"; create(out, hash)}
-    else if (TYPE ==  "nTEST") {CMP = "ucmp"; create(out, hash)}
-    else if (TYPE == "cnTEST") {CMP = "ucmp"; create(out, hash)}
+    if      (TYPE ==   "TEST:") {CMP = "cmp -s --"; run(out, hash)}
+    else if (TYPE ==  "cTEST:") {CMP = "cmp -s --"; create(out, hash)}
+    else if (TYPE ==  "nTEST:") {CMP = "ucmp";      run(out, hash)}
 }
 
 function run(out, hash) {
@@ -104,12 +102,12 @@ function hash2ref(s) {
 
 
 function cp(A, B,  cmd) {
-    cmd = sprintf("cp -- %s %s\n", A, B)
+    cmd = sprintf("cp -- '%s' '%s'\n", A, B)
     BODY = BODY cmd
 }
 
 function cmp(A, B,  cmd) {
-    cmd = sprintf("%s -s -- %s %s\n", CMP, A, B)
+    cmd = sprintf("%s '%s' '%s'\n", CMP, A, B)
     BODY = BODY cmd
 }
 
@@ -134,7 +132,6 @@ function process_all(  I, sep) {
     while (I <= NR) {
 	while (I <= NR) if (TYPE = begp(F[I++])) break
 	if (!(I <= NR) ) break
-
 	BODY = sep = ""
 	while (I <= NR) {
 	    if (endp(line = F[I++])) break
