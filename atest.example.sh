@@ -19,10 +19,11 @@
 # TEST: r4
 # ./atest.example.sh | awk '{print $1*$2*$3}' > run.out.vtk
 #
-# TEST: r5
+# numeric test
+# nTEST: r5
 # ./atest.example.sh > run.out.vtk
 #
-# shoud fail
+# should fail
 # nTEST: r6
 # echo 1 2 3 4 5 > run.out.vtk
 
