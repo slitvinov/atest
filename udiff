@@ -1,0 +1,7 @@
+#!/bin/bash
+
+# udiff - differential file comparator for numbers
+# udiff [option] file1 file2
+#
+# -e epsion    compare with abs(A-B) < diff (default: 0.1)
+
