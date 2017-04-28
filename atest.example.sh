@@ -8,7 +8,6 @@
 # Change TEST to cTEST to update test
 # TEST: r1
 # ./atest.example.sh           >  run.out.vtk
-# awk '{print $1*$2*$3}' run.out.vtk >  run.hash.txt
 #
 # TEST: r2
 # ./atest.example.sh | awk '{print $1}' > run.out.vtk
