@@ -40,17 +40,16 @@ function find_magic(base,  nb, d) { # a name of magic file *.base.*
     return substr(BODY, RSTART, RLENGTH)
 }
 
-function process() {
+function process(   out) {
     out  = find_magic("out")
-    hash = find_magic("hash")
 
-    if      (TYPE ==   "TEST:") {CMP = "cmp -s --"; run(out, hash)}
-    else if (TYPE ==  "cTEST:") {CMP = "cmp -s --"; create(out, hash)}
-    else if (TYPE ==  "nTEST:") {CMP = "ucmp";      run(out, hash)}
+    if      (TYPE ==   "TEST:") {CMP = "cmp -s --"; run(out)}
+    else if (TYPE ==  "cTEST:") {CMP = "cmp -s --"; create(out)}
+    else if (TYPE ==  "nTEST:") {CMP = "ucmp";      run(out)}
 }
 
-function run(out, hash) {
-    Test(out, hash)
+function run(out) {
+    Test(out)
     msg(" RUNNING: " NAME)
     if (!exec()) {
 	ipass++
@@ -59,27 +58,16 @@ function run(out, hash) {
 	lfail[++ifail] = NAME # a list of failed test names
 	msg(" FAILED : " NAME)
 	msg(" Test body:\n\n" BODY)
-	if (emptyp(hash))
-	    msg(" Files : `" out "` and `" out2ref(out) "` are different")
-	else {
-	    msg(" Files  : `" hash "` and `" hash2ref(hash) "` are different")
-	    msg(" Outputs: `" out "` and `" out2out(out) "`")
-	}
+	msg(" Files : `" out "` and `" out2ref(out) "` are different")
     }
 }
 
-function create(out, hash) {
-    cTest(out, hash)
+function create(out) {
+    cTest(out)
     msg(" CREATING: " NAME)
     msg("        Script body:\n\n" BODY)
     exec() # TODO: check if ref was created
     icreated++
-}
-
-function out2hash(s,   d) {
-    d  = "\\."        # dot
-    sub(d "out" d, ".hash.", s)
-    return s
 }
 
 function out2out(s) {
@@ -94,12 +82,6 @@ function out2ref(s) {
     return RDIR "/" s
 }
 
-function hash2ref(s) {
-    d  = "\\."        # dot
-    sub(d "hash" d,   ".ref." NAME ".",    s)
-    return RDIR "/" s
-}
-
 
 function cp(A, B,  cmd) {
     cmd = sprintf("cp -- '%s' '%s'\n", A, B)
@@ -111,20 +93,14 @@ function cmp(A, B,  cmd) {
     BODY = BODY cmd
 }
 
-function cTest(out, hash) { # add commands to BODY
+function cTest(out) { # add commands to BODY
     BODY = BODY "\n\n"
-    if (emptyp(hash)) {
-	cp(out, out2ref(out)) # use out as ref
-    } else {
-	cp(out,  out2out(out))
-	cp(hash, hash2ref(hash)) # use hash as ref
-    }
+    cp(out, out2ref(out)) # use out as ref
 }
 
-function Test(out, hash,    ref) { # add commands to BODY
+function Test(out,    ref) { # add commands to BODY
     BODY = BODY "\n\n"
-    if (emptyp(hash)) cmp(out ,  out2ref(out))
-    else              cmp(hash, hash2ref(hash))
+    cmp(out ,  out2ref(out))
 }
 
 function process_all(  I, sep) {
@@ -149,10 +125,6 @@ function summary(  i) {
 	msg(" failed tests:")
 	for (i = 1; i <= ifail; i++) msg("    " lfail[i])
     }
-}
-
-BEGIN {
-    CMP = "cmp"
 }
 
 { F[NR] = $0 } # store every line in array
