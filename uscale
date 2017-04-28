@@ -1,0 +1,29 @@
+#!/bin/bash
+
+# uscale - scale all numbers by `sc'
+# uscale sc [file] ...
+
+awk '
+BEGIN {
+    if (ARGC < 2) die("arg count")
+    sc = ARGV[1]; req_number(sc); shift()
+    fmt = "%.15g"
+}
+
+{
+    for (i = 1; i <= NF; i++) {
+	x = sc*$i
+	printf(fmt "%s", x, i < NF ? " " : "\n")
+    }
+}
+
+function shift(  i) { for (i = 1; i < ARGC; i++) ARGV[i-1] = ARGV[i]; ARGC-- }
+function req_number(e,  float) {
+    if (e ~ /^[+-]?([0-9]+[.]?[0-9]*|[.][0-9]+)([eE][+-]?[0-9]+)?$/) return
+    die("uscale: not a number : " e)
+}
+function die(s) { print "uscale: " s | "cat 2>&1"; exit 1 }
+' "$@"
+
+# TEST: uscale.t0
+# (seq 10; echo -0.1 -0.2 -0.3) | ./uscale -4.2e3 > uscale.out.txt
