@@ -3,7 +3,7 @@
 # Let test atest.example.sh function
 #
 # Usage:
-# ./atest.awk atest.example.sh
+# atest atest.example.sh
 #
 # Change TEST to cTEST to update test
 # TEST: r1
