@@ -15,10 +15,6 @@ function ini() {
     gsub(/%[A-Za-z0-9]+/, "%s", FMT)
 }
 
-function endp(r) { return !(r > 0 ) }
-function max(a, b) { return a > b ? a : b }
-function abs(a) { return a >= 0 ? a : -a }
-
 function diff(   r1, r2, n1, n2, n, i, bad) {
     for (;;) {
 	r1 = getline l1 < f1; i1++
@@ -54,6 +50,9 @@ BEGIN {
     diff()
 }
 
+function endp(r) { return !(r > 0 ) }
+function max(a, b) { return a > b ? a : b }
+function abs(a) { return a >= 0 ? a : -a }
 function numperp(e) {return e == e + 0.0}
 function shift(  i) {for (i = 1; i < ARGC; i++) ARGV[i-1] = ARGV[i]; ARGC--}
 function die(s) { print "udff: " s | "cat 2>&1"; exit 1 }
