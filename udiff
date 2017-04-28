@@ -67,7 +67,7 @@ function bl(s)   { return zerop(s) ? "<blank>" : s }
 # ./udiff A B > diff.out.txt # empty file
 #
 # TEST: udiff.t1
-# echo 1.01 > A; echo 1 > B
+# echo 1.1 > A; echo 1 > B
 # ./udiff A B > diff.out.txt # empty file
 #
 # TEST: udiff.t2
