@@ -18,7 +18,7 @@
 # TEST: r4
 # ./atest.example.sh | awk '{print $1*$2*$3}' > run.out.vtk
 #
-# numeric test
+# numeric test (tolerance 0.1 : abs(a-b) < 0.1 are the same)
 # nTEST: r5
 # echo 1 2 3 4 5 > run.out.vtk
 #
