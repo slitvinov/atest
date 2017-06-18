@@ -29,7 +29,7 @@ function begp(s,  a) { # is beginning of a test? sets `NAME' and
 
 function endp(s) { # is end of a test?
     s = after_comm(s)
-    if (ICOMM == 0 || emptyp(s)) return 1 # not a comment or empty
+    if (ICOMM == 0 || FNR == 1 || emptyp(s)) return 1 # not a comment or empty
 					  # line end test
 }
 
@@ -50,22 +50,19 @@ function process(   out) {
 
 function run(out) {
     Test(out)
-    msg(" RUNNING: " NAME)
+    msg("RUNNING: " NAME)
     if (!exec()) {
 	ipass++
-	msg(" PASSED : " NAME)
+	msg("PASSED : " NAME)
     } else {
 	lfail[++ifail] = NAME # a list of failed test names
-	msg(" FAILED : " NAME)
-	msg(" Test body:\n\n" BODY)
-	msg(" Files : `" out "` and `" out2ref(out) "` are different")
+	msg("FAILED : " NAME "\n\n" BODY)
     }
 }
 
 function create(out) {
     cTest(out)
-    msg(" CREATING: " NAME)
-    msg("        Script body:\n\n" BODY)
+    msg("CREATING: " NAME "\n\n" BODY)
     exec() # TODO: check if ref was created
     icreated++
 }
@@ -119,10 +116,10 @@ function process_all(  I, sep) {
 }
 
 function summary(  i) {
-    msg(sprintf(" %d/%d test(s) passed", ipass, ipass+ifail))
+    msg(sprintf("%d/%d test(s) passed", ipass, ipass+ifail))
     if (icreated) msg(sprintf("   %d test(s) created", icreated))
     if (ifail) {
-	msg(" failed tests:")
+	msg("failed tests:")
 	for (i = 1; i <= ifail; i++) msg("    " lfail[i])
     }
 }
@@ -134,5 +131,5 @@ END {
 }
 
 function exec()  { return system(BODY) }
-function msg(s) { printf "(atest)%s\n", s | "cat 1>&1" }
+function msg(s) { printf "atest: %s\n", s | "cat 1>&1" }
 function die(s) {msg(s); exit(1)}
