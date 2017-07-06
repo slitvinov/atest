@@ -131,5 +131,5 @@ END {
 }
 
 function exec()  { return system(BODY) }
-function msg(s) { printf "atest: %s\n", s | "cat 1>&1" }
+function msg(s) { printf "atest: %s\n", s | "cat >&2" }
 function die(s) {msg(s); exit(1)}
