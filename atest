@@ -29,8 +29,7 @@ function begp(s,  a) { # is beginning of a test? sets `NAME' and
 
 function endp(s) { # is end of a test?
     s = after_comm(s)
-    if (ICOMM == 0 || FNR == 1 || emptyp(s)) return 1 # not a comment or empty
-					              # line end test
+    if (FNR == 1 || emptyp(s)) return 1 # empty line or a new file end test
 }
 
 function find_magic(base,  nb, d) { # a name of magic file *.base.*
