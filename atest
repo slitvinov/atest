@@ -5,36 +5,43 @@
 
 BEGIN {
     RDIR="test_data" # directory with reference files
-    mdkir(RDIR)
+    mkdir(RDIR)
     ipass = ifail = icreated = 0 # counters
 }
 
 function mkdir(d,   c) {
-    c = sprintf("mdkir -p %s", d)
+    c = sprintf("mkdir -p %s", d)
     system(c)
 }
 
 function emptyp(s) { return s ~ /^[ \t]*$/ }
-
 function after_comm(s,   i) { # returns a part of a string after `#'
     ICOMM = index(s, "#")     # sets global ICOMM: position of a first `#'
     return substr(s, ICOMM + 1)
 }
 
-function begp(s,  a) { # is beginning of a test? sets `NAME' and
-		       # returns `TYPE' of a test
+function set_line(i,   j, s) { F[i] = s; FILE_NR[i] = j }
+# new file predicate?
+function new_filep(i) { return FILE_NR[i] == 1}
+function get_line(i) { return F[i] }
+function begp(i,  s, a) { # is beginning of a test? sets `NAME' and
+		          # sets `TYPE' of a test
+    s = get_line(i)
     s = after_comm(s)
     if (ICOMM == 0) return 0
     split(s, a); s = a[1]
-    if      (s ==   "TEST:") {NAME = a[2]; return s}
-    else if (s ==  "cTEST:") {NAME = a[2]; return s} # create
-    else if (s ==  "nTEST:") {NAME = a[2]; return s} # run numeric test
-    else                                   return 0
+    if      (s ==   "TEST:") {NAME = a[2]; TYPE = s; return 1}
+    else if (s ==  "cTEST:") {NAME = a[2]; TYPE = s; return 1} # create
+    else if (s ==  "nTEST:") {NAME = a[2]; TYPE = s; return 1} # run numeric test
+    else                                   return 0            # not a test
 }
 
-function endp(s) { # is end of a test?
+function endp(i,  s) { # is end of a test?
+    if (new_filep(i)) return 1
+    s = get_line(i)
     s = after_comm(s)
     if (FNR == 1 || emptyp(s)) return 1 # empty line or a new file end test
+    return 0
 }
 
 function find_magic(base,  nb, d) { # a name of magic file *.base.*
@@ -106,16 +113,24 @@ function Test(out,    ref) { # add commands to BODY
 
 function process_all(  I, sep) {
     I = 1 # position in a file
-    while (I <= NR) {
-	while (I <= NR) if (TYPE = begp(F[I++])) break
-	if (!(I <= NR) ) break
+    for (;;) {
+	# between tests
+	for (;;) {
+	    if (I > NR)      break
+	    if (begp(I++)) break
+	}
+	if (I > NR) break
+
+	# test
 	BODY = sep = ""
-	while (I <= NR) {
-	    if (endp(line = F[I++])) break
-	    BODY = BODY sep after_comm(line)
+	for (;;) {
+	    if (I > NR)  break
+	    if (endp(I)) break
+	    line = get_line(I)
+	    BODY = BODY sep after_comm(line); I++
 	    sep  = RS
 	}
-	process() # uses `TYPE', `NAME', `BODY'
+	process()
     }
 }
 
@@ -128,7 +143,7 @@ function summary(  i) {
     }
 }
 
-{ F[NR] = $0 } # store every line in array
+{ set_line(NR,   FNR, $0) }
 END {
     process_all() # extract and run all tests
     summary()
