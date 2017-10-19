@@ -5,8 +5,13 @@
 
 BEGIN {
     RDIR="test_data" # directory with reference files
-    system("mkdir -p " RDIR)
+    mdkir(RDIR)
     ipass = ifail = icreated = 0 # counters
+}
+
+function mkdir(d,   c) {
+    c = sprintf("mdkir -p %s", d)
+    system(c)
 }
 
 function emptyp(s) { return s ~ /^[ \t]*$/ }
