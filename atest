@@ -66,10 +66,7 @@ function run(out) {
 	ipass++
 	msg("PASSED : " NAME)
     } else {
-	ifail++
-	lfail[ifail] = NAME # a list of failed test names
-	ffail[ifail] = FILENAME
-	msg("FAILED : " NAME " : " FILENAME)
+	lfail[++ifail] = NAME # a list of failed test names
     }
 }
 
@@ -141,7 +138,7 @@ function summary(  i) {
     if (icreated) msg(sprintf("   %d test(s) created", icreated))
     if (ifail) {
 	msg("failed tests:")
-	for (i = 1; i <= ifail; i++) msg("    " lfail[i] " : " ffail[i])
+	for (i = 1; i <= ifail; i++) msg("    " lfail[i])
     }
 }
 
