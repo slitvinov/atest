@@ -68,6 +68,7 @@ function run(out) {
 	msg("PASSED : " NAME)
     } else {
 	lfail[++ifail] = NAME # a list of failed test names
+	msg("FAILED : " NAME "\n\n" BODY)
     }
 }
 
