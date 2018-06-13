@@ -1,8 +1,26 @@
-#!/usr/bin/awk -f
-#
-# Better testing framework
-# See atest.example.sh
+#!/bin/bash
 
+: ${AWK=awk}
+: ${LOG=0}
+
+me=atest
+usg () {
+    msg "$me [FILE].."
+    msg "run atests in [FILE].."
+    exit
+}
+
+msg () { echo >&2 "$@" ; }
+err () { msg "$me: $@"; exit 2 ; }
+
+if test $# -ne 0 && test $1 = -h; then usg; fi
+for i
+do if ! test -f "$i"
+   then err "not a file '$i'"
+   fi
+done
+
+"$AWK" '
 BEGIN {
     PWD=ENVIRON["PWD"]
     RDIR="test_data" # directory with reference files
@@ -16,8 +34,8 @@ function mkdir(d,   c) {
 }
 
 function emptyp(s) { return s ~ /^[ \t]*$/ }
-function after_comm(s,   i) { # returns a part of a string after `#'
-    ICOMM = index(s, "#")     # sets global ICOMM: position of a first `#'
+function after_comm(s,   i) { # returns a part of a string after #
+    ICOMM = index(s, "#")     # sets global ICOMM: position of a first #
     return substr(s, ICOMM + 1)
 }
 
@@ -25,8 +43,8 @@ function set_line(i,   j, s) { F[i] = s; FILE_NR[i] = j }
 # new file predicate?
 function new_filep(i) { return FILE_NR[i] == 1}
 function get_line(i) { return F[i] }
-function begp(i,  s, a) { # is beginning of a test? sets `NAME' and
-		          # sets `TYPE' of a test
+function begp(i,  s, a) { # is beginning of a test? sets NAME and
+		          # sets TYPE of a test
     s = get_line(i)
     s = after_comm(s)
     if (ICOMM == 0) return 0
@@ -93,12 +111,12 @@ function out2ref(s) {
 
 
 function cp(A, B,  cmd) {
-    cmd = sprintf("cp -- '%s' '%s'\n", A, B)
+    cmd = sprintf("cp -- %s %s\n", q(A), q(B))
     BODY = BODY cmd
 }
 
 function cmp(A, B,  cmd) {
-    cmd = sprintf("%s '%s' '%s'\n", CMP, A, B)
+    cmd = sprintf("%s %s %s\n", CMP, q(A), q(B))
     BODY = BODY cmd
 }
 
@@ -150,5 +168,7 @@ END {
     summary()
 }
 
+function q(s)    { return "\"" s "\"" }
 function exec()  { return system(BODY) }
 function msg(s) { printf "atest: %s\n", s | "cat >&2" }
+' "$@"
