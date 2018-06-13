@@ -7,10 +7,6 @@ atest - run atests
 == SYNOPSIS
 *atest* ['FILE']..
 
-
-== DESCRIPTION
-atest(1) runs atests
-
 == TUTORIAL
 
 Lets create a test for a program `atest.example.sh`
@@ -73,6 +69,32 @@ noticed.
     atest: failed tests:
     atest:     0
 ....
+
+== DESCRIPTION
+
+A test consists of a header line and lines which are executed as a
+shell script. Empty line ends a script.
+
+....
+# TEST: name
+<script>
+<scirpt>
+<script>
+
+<not a script>
+....
+
+cTEST indicate "create" mode. In this mode the script updates the
+referense file.
+
+....
+# cTEST: name
+....
+
+nTEST is "numerical" comparison mode. In this mode every numbers in
+the output are compared with the reference up to a tolerance 0.1. For
+a reference output *1 2 3*. A program which outputs *1.01 2 3* passes
+a test and one which outputs *1.11 2 3* does not pass a test.
 
 == EXAMPLES
 `atest atest.examples.sh`
