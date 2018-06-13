@@ -32,9 +32,6 @@ atest \- run atests
 .SH "SYNOPSIS"
 .sp
 \fBatest\fR [\fIFILE\fR]\&.\&.
-.SH "DESCRIPTION"
-.sp
-atest(1) runs atests
 .SH "TUTORIAL"
 .sp
 Lets create a test for a program atest\&.example\&.sh
@@ -142,6 +139,38 @@ Now if you "break" atest\&.example\&.sh and run atest test/0 it get noticed\&.
 .if n \{\
 .RE
 .\}
+.SH "DESCRIPTION"
+.sp
+A test consists of a header line and lines which are executed as a shell script\&. Empty line ends a script\&.
+.sp
+.if n \{\
+.RS 4
+.\}
+.nf
+# TEST: name
+<script>
+<scirpt>
+<script>
+
+<not a script>
+.fi
+.if n \{\
+.RE
+.\}
+.sp
+cTEST indicate "create" mode\&. In this mode the script updates the referense file\&.
+.sp
+.if n \{\
+.RS 4
+.\}
+.nf
+# cTEST: name
+.fi
+.if n \{\
+.RE
+.\}
+.sp
+nTEST is "numerical" comparison mode\&. In this mode every numbers in the output are compared with the reference up to a tolerance 0\&.1\&. For a reference output \fB1 2 3\fR\&. A program which outputs \fB1\&.01 2 3\fR passes a test and one which outputs \fB1\&.11 2 3\fR does not pass a test\&.
 .SH "EXAMPLES"
 .sp
 atest atest\&.examples\&.sh

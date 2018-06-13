@@ -12,13 +12,13 @@ atest - run atests
 Lets create a test for a program `atest.example.sh`
 
 ....
-$ ./atest.example.sh
+$ ./example.sh
 ....
 
 it outputs
 
 ....
-	 1 2 3 4 5
+	 1 2 3
 ....
 
 and you want to modify `atest.example.sh` and make sure the output is
