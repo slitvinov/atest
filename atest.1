@@ -86,9 +86,7 @@ atest:    1 test(s) created
 .RE
 .\}
 .sp
-atest created a directory \fItest_data\fR and stored reference output into it\&.
-.sp
-To run a test replace \fIcTEST\fR by \fITEST\fR in \fItest/0\fR and run
+atest and stored a reference output to a directory \fItest_data\fR\&. To run a test replace \fIcTEST\fR by \fITEST\fR in \fItest/0\fR and execute
 .sp
 .if n \{\
 .RS 4
@@ -141,7 +139,7 @@ atest:     0
 .\}
 .SH "DESCRIPTION"
 .sp
-A test consists of a header line and lines which are executed as a shell script\&. Empty line ends a script\&.
+A test consists of a header line and lines which are executed as a shell script\&. An empty line ends a script\&.
 .sp
 .if n \{\
 .RS 4
@@ -158,7 +156,7 @@ A test consists of a header line and lines which are executed as a shell script\
 .RE
 .\}
 .sp
-cTEST means "create" mode\&. In this mode the script updates the referense file\&.
+cTEST means "create" mode\&. In this mode the script updates the reference file\&.
 .sp
 .if n \{\
 .RS 4
