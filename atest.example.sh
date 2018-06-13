@@ -26,4 +26,4 @@
 # nTEST: r6
 # echo 1 2 3 4 5 > run.out.vtk
 
-echo 1 2 3 4 5
+echo 1 2 3 4
