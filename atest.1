@@ -37,13 +37,13 @@ atest \- run atests
 atest(1) runs atests
 .SH "TUTORIAL"
 .sp
-Let create a test for atest\&.example\&.sh
+Lets create a test for a program atest\&.example\&.sh
 .sp
 .if n \{\
 .RS 4
 .\}
 .nf
-        \&./atest\&.example\&.sh
+$ \&./atest\&.example\&.sh
 .fi
 .if n \{\
 .RE
@@ -63,7 +63,7 @@ it outputs
 .sp
 and you want to modify atest\&.example\&.sh and make sure the output is the same after modifications\&.
 .sp
-Create a file test/0
+Create a file with a test test/0
 .sp
 .if n \{\
 .RS 4
@@ -76,7 +76,19 @@ Create a file test/0
 .RE
 .\}
 .sp
-Run atest test/0 end of the output says:
+It is a shell script with a special pattern in a first line\&. A file name example\&.out\&.txt contains a "magic" pattern \fB\&.out\&.\fR which tells atest to consider this as a reference output\&. Run
+.sp
+.if n \{\
+.RS 4
+.\}
+.nf
+$ atest test/0
+.fi
+.if n \{\
+.RE
+.\}
+.sp
+end of the output says:
 .sp
 .if n \{\
 .RS 4
@@ -89,7 +101,21 @@ Run atest test/0 end of the output says:
 .RE
 .\}
 .sp
-Replace cTEST by ``TEST` in test/0 and run atest test/0\&. It returns:
+atest created directory test_data and stored output in it\&.
+.sp
+To run a test\&. Replace cTEST by ``TEST` in test/0 and run
+.sp
+.if n \{\
+.RS 4
+.\}
+.nf
+$ atest test/0
+.fi
+.if n \{\
+.RE
+.\}
+.sp
+It returns
 .sp
 .if n \{\
 .RS 4
@@ -103,7 +129,7 @@ Replace cTEST by ``TEST` in test/0 and run atest test/0\&. It returns:
 .RE
 .\}
 .sp
-Now if you "break" atest\&.example\&.sh and run atest test/0 it returns
+Now if you "break" atest\&.example\&.sh and run atest test/0 it get noticed\&.
 .sp
 .if n \{\
 .RS 4
@@ -116,8 +142,6 @@ Now if you "break" atest\&.example\&.sh and run atest test/0 it returns
 .if n \{\
 .RE
 .\}
-.sp
-Internally atest runs everything after # TEST: as a script\&. And stores output to a directory test_data\&. How does it know what is an output? It looks for a magic pattern \&.out\&. and consider a file which contains an output\&.
 .SH "EXAMPLES"
 .sp
 atest atest\&.examples\&.sh
