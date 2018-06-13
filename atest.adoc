@@ -21,19 +21,20 @@ it outputs
 1 2 3
 ....
 
-and you want to modify `example` and make sure the output stay the
+and you want to modify './example' and make sure the output stay the
 same.
 
-Create a file with a test `test/0`
+Create a file with a test 'test/0'
 
 ....
 # cTEST: 0
-./atest.example.sh  > example.out.txt
+./example  > example.out.txt
 ....
 
-The second line is shell script. It create a file example.out.txt
-which contains a "magic" pattern *.out.*. This pattern tells atest to
-consider this file as a reference output.
+The lines after '# cTEST: 0' are executed as a script. The script
+creates a file example.out.txt which contains a "magic" pattern
+'.out.'. This pattern tells atest to consider this file as a reference
+output.
 
 ....
 $ atest test/0
@@ -46,9 +47,9 @@ atest: 0/0 test(s) passed
 atest:    1 test(s) created
 ....
 
-atest created directory test_data and stored reference output into it.
+atest created a directory 'test_data' and stored reference output into it.
 
-To run a test replace cTEST by TEST in `test/0` and run
+To run a test replace 'cTEST' by 'TEST' in 'test/0' and run
 ....
 $ atest test/0
 ....
@@ -61,7 +62,7 @@ atest: PASSED : 0
 atest: 1/1 test(s) passed
 ....
 
-Now if you "break" `./example` and run `atest test/0` again it get
+Now if you "break" './example' and run `atest test/0` again it get
 noticed.
 
 ....
@@ -93,8 +94,12 @@ referense file.
 
 nTEST is "numerical" comparison mode. In this mode every number in the
 output is compared with the reference up to a tolerance 0.1. For a
-reference output *1 2 3*. A program which outputs *1.01 2 3* passes a
-test and one which outputs *1.11 2 3* does not.
+reference output '1 2 3'. A program which outputs '1.01 2 3' passes a
+test and one which outputs '1.11 2 3' does not.
 
 == EXAMPLES
-`atest atest.examples.sh`
+``atest atest.examples.sh``::
+  Run tests in 'atest.examples.sh'
+
+== RESOURCES
+git@gitlab.ethz.ch:mavt-cse/atest

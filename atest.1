@@ -58,22 +58,22 @@ it outputs
 .RE
 .\}
 .sp
-and you want to modify example and make sure the output stay the same\&.
+and you want to modify \fI\&./example\fR and make sure the output stay the same\&.
 .sp
-Create a file with a test test/0
+Create a file with a test \fItest/0\fR
 .sp
 .if n \{\
 .RS 4
 .\}
 .nf
 # cTEST: 0
-\&./atest\&.example\&.sh  > example\&.out\&.txt
+\&./example  > example\&.out\&.txt
 .fi
 .if n \{\
 .RE
 .\}
 .sp
-The second line is shell script\&. It create a file example\&.out\&.txt which contains a "magic" pattern \fB\&.out\&.\fR\&. This pattern tells atest to consider this file as a reference output\&.
+The lines after \fI# cTEST: 0\fR are executed as a script\&. The script creates a file example\&.out\&.txt which contains a "magic" pattern \fI\&.out\&.\fR\&. This pattern tells atest to consider this file as a reference output\&.
 .sp
 .if n \{\
 .RS 4
@@ -98,9 +98,9 @@ atest:    1 test(s) created
 .RE
 .\}
 .sp
-atest created directory test_data and stored reference output into it\&.
+atest created a directory \fItest_data\fR and stored reference output into it\&.
 .sp
-To run a test replace cTEST by TEST in test/0 and run
+To run a test replace \fIcTEST\fR by \fITEST\fR in \fItest/0\fR and run
 .sp
 .if n \{\
 .RS 4
@@ -126,7 +126,7 @@ atest: 1/1 test(s) passed
 .RE
 .\}
 .sp
-Now if you "break" \&./example and run atest test/0 again it get noticed\&.
+Now if you "break" \fI\&./example\fR and run atest test/0 again it get noticed\&.
 .sp
 .if n \{\
 .RS 4
@@ -170,7 +170,14 @@ cTEST means "create" mode\&. In this mode the script updates the referense file\
 .RE
 .\}
 .sp
-nTEST is "numerical" comparison mode\&. In this mode every number in the output is compared with the reference up to a tolerance 0\&.1\&. For a reference output \fB1 2 3\fR\&. A program which outputs \fB1\&.01 2 3\fR passes a test and one which outputs \fB1\&.11 2 3\fR does not\&.
+nTEST is "numerical" comparison mode\&. In this mode every number in the output is compared with the reference up to a tolerance 0\&.1\&. For a reference output \fI1 2 3\fR\&. A program which outputs \fI1\&.01 2 3\fR passes a test and one which outputs \fI1\&.11 2 3\fR does not\&.
 .SH "EXAMPLES"
+.PP
+``atest atest\&.examples\&.sh``
+.RS 4
+Run tests in
+\fIatest\&.examples\&.sh\fR
+.RE
+.SH "RESOURCES"
 .sp
-atest atest\&.examples\&.sh
+git@gitlab\&.ethz\&.ch:mavt\-cse/atest
