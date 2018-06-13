@@ -12,28 +12,28 @@ atest - run atests
 Lets create a test for a program `atest.example.sh`
 
 ....
-$ ./example.sh
+$ ./example
 ....
 
 it outputs
 
 ....
-	 1 2 3
+1 2 3
 ....
 
-and you want to modify `atest.example.sh` and make sure the output is
-the same after modifications.
+and you want to modify `example` and make sure the output stay the
+same.
 
 Create a file with a test `test/0`
 
 ....
-	# cTEST: 0
-	./atest.example.sh  > example.out.txt
+# cTEST: 0
+./atest.example.sh  > example.out.txt
 ....
 
-It is a shell script with a special pattern in a first line.  A file
-name example.out.txt contains a "magic" pattern *.out.* which tells
-atest to consider this as a reference output. Run
+The second line is shell script. It create a file example.out.txt
+which contains a "magic" pattern *.out.*. This pattern tells atest to
+consider this file as a reference output.
 
 ....
 $ atest test/0
@@ -42,13 +42,13 @@ $ atest test/0
 end of the output says:
 
 ....
-	atest: 0/0 test(s) passed
-	atest:    1 test(s) created
+atest: 0/0 test(s) passed
+atest:    1 test(s) created
 ....
 
-atest created directory test_data and stored output in it.
+atest created directory test_data and stored reference output into it.
 
-To run a test. Replace `cTEST` by ``TEST` in `test/0` and run
+To run a test replace cTEST by TEST in `test/0` and run
 ....
 $ atest test/0
 ....
@@ -56,18 +56,18 @@ $ atest test/0
 It returns
 
 ....
-	atest: RUNNING: 0
-	atest: PASSED : 0
-	atest: 1/1 test(s) passed
+atest: RUNNING: 0
+atest: PASSED : 0
+atest: 1/1 test(s) passed
 ....
 
-Now if you "break" `atest.example.sh` and run `atest test/0` it get
+Now if you "break" `./example` and run `atest test/0` again it get
 noticed.
 
 ....
-    atest: 0/1 test(s) passed
-    atest: failed tests:
-    atest:     0
+atest: 0/1 test(s) passed
+atest: failed tests:
+atest:     0
 ....
 
 == DESCRIPTION
@@ -84,17 +84,17 @@ shell script. Empty line ends a script.
 <not a script>
 ....
 
-cTEST indicate "create" mode. In this mode the script updates the
+cTEST means "create" mode. In this mode the script updates the
 referense file.
 
 ....
 # cTEST: name
 ....
 
-nTEST is "numerical" comparison mode. In this mode every numbers in
-the output are compared with the reference up to a tolerance 0.1. For
-a reference output *1 2 3*. A program which outputs *1.01 2 3* passes
-a test and one which outputs *1.11 2 3* does not pass a test.
+nTEST is "numerical" comparison mode. In this mode every number in the
+output is compared with the reference up to a tolerance 0.1. For a
+reference output *1 2 3*. A program which outputs *1.01 2 3* passes a
+test and one which outputs *1.11 2 3* does not.
 
 == EXAMPLES
 `atest atest.examples.sh`

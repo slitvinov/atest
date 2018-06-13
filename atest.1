@@ -40,7 +40,7 @@ Lets create a test for a program atest\&.example\&.sh
 .RS 4
 .\}
 .nf
-$ \&./atest\&.example\&.sh
+$ \&./example
 .fi
 .if n \{\
 .RE
@@ -52,13 +52,13 @@ it outputs
 .RS 4
 .\}
 .nf
-         1 2 3 4 5
+1 2 3
 .fi
 .if n \{\
 .RE
 .\}
 .sp
-and you want to modify atest\&.example\&.sh and make sure the output is the same after modifications\&.
+and you want to modify example and make sure the output stay the same\&.
 .sp
 Create a file with a test test/0
 .sp
@@ -66,14 +66,14 @@ Create a file with a test test/0
 .RS 4
 .\}
 .nf
-        # cTEST: 0
-        \&./atest\&.example\&.sh  > example\&.out\&.txt
+# cTEST: 0
+\&./atest\&.example\&.sh  > example\&.out\&.txt
 .fi
 .if n \{\
 .RE
 .\}
 .sp
-It is a shell script with a special pattern in a first line\&. A file name example\&.out\&.txt contains a "magic" pattern \fB\&.out\&.\fR which tells atest to consider this as a reference output\&. Run
+The second line is shell script\&. It create a file example\&.out\&.txt which contains a "magic" pattern \fB\&.out\&.\fR\&. This pattern tells atest to consider this file as a reference output\&.
 .sp
 .if n \{\
 .RS 4
@@ -91,16 +91,16 @@ end of the output says:
 .RS 4
 .\}
 .nf
-        atest: 0/0 test(s) passed
-        atest:    1 test(s) created
+atest: 0/0 test(s) passed
+atest:    1 test(s) created
 .fi
 .if n \{\
 .RE
 .\}
 .sp
-atest created directory test_data and stored output in it\&.
+atest created directory test_data and stored reference output into it\&.
 .sp
-To run a test\&. Replace cTEST by ``TEST` in test/0 and run
+To run a test replace cTEST by TEST in test/0 and run
 .sp
 .if n \{\
 .RS 4
@@ -118,23 +118,23 @@ It returns
 .RS 4
 .\}
 .nf
-        atest: RUNNING: 0
-        atest: PASSED : 0
-        atest: 1/1 test(s) passed
+atest: RUNNING: 0
+atest: PASSED : 0
+atest: 1/1 test(s) passed
 .fi
 .if n \{\
 .RE
 .\}
 .sp
-Now if you "break" atest\&.example\&.sh and run atest test/0 it get noticed\&.
+Now if you "break" \&./example and run atest test/0 again it get noticed\&.
 .sp
 .if n \{\
 .RS 4
 .\}
 .nf
-    atest: 0/1 test(s) passed
-    atest: failed tests:
-    atest:     0
+atest: 0/1 test(s) passed
+atest: failed tests:
+atest:     0
 .fi
 .if n \{\
 .RE
@@ -158,7 +158,7 @@ A test consists of a header line and lines which are executed as a shell script\
 .RE
 .\}
 .sp
-cTEST indicate "create" mode\&. In this mode the script updates the referense file\&.
+cTEST means "create" mode\&. In this mode the script updates the referense file\&.
 .sp
 .if n \{\
 .RS 4
@@ -170,7 +170,7 @@ cTEST indicate "create" mode\&. In this mode the script updates the referense fi
 .RE
 .\}
 .sp
-nTEST is "numerical" comparison mode\&. In this mode every numbers in the output are compared with the reference up to a tolerance 0\&.1\&. For a reference output \fB1 2 3\fR\&. A program which outputs \fB1\&.01 2 3\fR passes a test and one which outputs \fB1\&.11 2 3\fR does not pass a test\&.
+nTEST is "numerical" comparison mode\&. In this mode every number in the output is compared with the reference up to a tolerance 0\&.1\&. For a reference output \fB1 2 3\fR\&. A program which outputs \fB1\&.01 2 3\fR passes a test and one which outputs \fB1\&.11 2 3\fR does not\&.
 .SH "EXAMPLES"
 .sp
 atest atest\&.examples\&.sh
