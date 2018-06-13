@@ -9,7 +9,7 @@ atest - run atests
 
 == TUTORIAL
 
-Lets create a test for a program `./example`
+Lets create a test for a program './example'
 
 ....
 $ ./example
