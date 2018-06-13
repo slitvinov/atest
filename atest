@@ -72,7 +72,6 @@ function find_magic(base,  nb, d) { # a name of magic file *.base.*
 
 function process(   out) {
     out  = find_magic("out")
-
     if      (TYPE ==   "TEST:") {CMP = "cmp -s --"; run(out)}
     else if (TYPE ==  "cTEST:") {CMP = "cmp -s --"; create(out)}
     else if (TYPE ==  "nTEST:") {CMP = "ucmp";      run(out)}

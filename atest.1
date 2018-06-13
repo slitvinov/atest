@@ -1,0 +1,123 @@
+'\" t
+.\"     Title: atest
+.\"    Author: [FIXME: author] [see http://docbook.sf.net/el/author]
+.\" Generator: DocBook XSL Stylesheets v1.79.1 <http://docbook.sf.net/>
+.\"      Date: 06/13/2018
+.\"    Manual: \ \&
+.\"    Source: \ \&
+.\"  Language: English
+.\"
+.TH "ATEST" "1" "06/13/2018" "\ \&" "\ \&"
+.\" -----------------------------------------------------------------
+.\" * Define some portability stuff
+.\" -----------------------------------------------------------------
+.\" ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+.\" http://bugs.debian.org/507673
+.\" http://lists.gnu.org/archive/html/groff/2009-02/msg00013.html
+.\" ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+.ie \n(.g .ds Aq \(aq
+.el       .ds Aq '
+.\" -----------------------------------------------------------------
+.\" * set default formatting
+.\" -----------------------------------------------------------------
+.\" disable hyphenation
+.nh
+.\" disable justification (adjust text to left margin only)
+.ad l
+.\" -----------------------------------------------------------------
+.\" * MAIN CONTENT STARTS HERE *
+.\" -----------------------------------------------------------------
+.SH "NAME"
+atest \- run atests
+.SH "SYNOPSIS"
+.sp
+\fBatest\fR [\fIFILE\fR]\&.\&.
+.SH "DESCRIPTION"
+.sp
+atest(1) runs atests
+.SH "TUTORIAL"
+.sp
+Let create a test for atest\&.example\&.sh
+.sp
+.if n \{\
+.RS 4
+.\}
+.nf
+        \&./atest\&.example\&.sh
+.fi
+.if n \{\
+.RE
+.\}
+.sp
+it outputs
+.sp
+.if n \{\
+.RS 4
+.\}
+.nf
+         1 2 3 4 5
+.fi
+.if n \{\
+.RE
+.\}
+.sp
+and you want to modify atest\&.example\&.sh and make sure the output is the same after modifications\&.
+.sp
+Create a file test/0
+.sp
+.if n \{\
+.RS 4
+.\}
+.nf
+        # cTEST: 0
+        \&./atest\&.example\&.sh  > example\&.out\&.txt
+.fi
+.if n \{\
+.RE
+.\}
+.sp
+Run atest test/0 end of the output says:
+.sp
+.if n \{\
+.RS 4
+.\}
+.nf
+        atest: 0/0 test(s) passed
+        atest:    1 test(s) created
+.fi
+.if n \{\
+.RE
+.\}
+.sp
+Replace cTEST by ``TEST` in test/0 and run atest test/0\&. It returns:
+.sp
+.if n \{\
+.RS 4
+.\}
+.nf
+        atest: RUNNING: 0
+        atest: PASSED : 0
+        atest: 1/1 test(s) passed
+.fi
+.if n \{\
+.RE
+.\}
+.sp
+Now if you "break" atest\&.example\&.sh and run atest test/0 it returns
+.sp
+.if n \{\
+.RS 4
+.\}
+.nf
+    atest: 0/1 test(s) passed
+    atest: failed tests:
+    atest:     0
+.fi
+.if n \{\
+.RE
+.\}
+.sp
+Internally atest runs everything after # TEST: as a script\&. And stores output to a directory test_data\&. How does it know what is an output? It looks for a magic pattern \&.out\&. and consider a file which contains an output\&.
+.SH "EXAMPLES"
+.sp
+atest atest\&.examples\&.sh
