@@ -46,19 +46,7 @@ $ \&./example
 .RE
 .\}
 .sp
-it outputs
-.sp
-.if n \{\
-.RS 4
-.\}
-.nf
-1 2 3
-.fi
-.if n \{\
-.RE
-.\}
-.sp
-and you want to modify \fI\&./example\fR and make sure the output stay the same\&.
+it outputs \fB1 2 3\fR and you want to modify \fI\&./example\fR and make sure the output stay the same\&.
 .sp
 Create a file with a test \fItest/0\fR
 .sp
@@ -126,7 +114,19 @@ atest: 1/1 test(s) passed
 .RE
 .\}
 .sp
-Now if you "break" \fI\&./example\fR and run atest test/0 again it get noticed\&.
+Now if you "break" \fI\&./example\fR and run
+.sp
+.if n \{\
+.RS 4
+.\}
+.nf
+atest test/0
+.fi
+.if n \{\
+.RE
+.\}
+.sp
+it get noticed\&.
 .sp
 .if n \{\
 .RS 4
@@ -170,7 +170,7 @@ cTEST means "create" mode\&. In this mode the script updates the referense file\
 .RE
 .\}
 .sp
-nTEST is "numerical" comparison mode\&. In this mode every number in the output is compared with the reference up to a tolerance 0\&.1\&. For a reference output \fI1 2 3\fR\&. A program which outputs \fI1\&.01 2 3\fR passes a test and one which outputs \fI1\&.11 2 3\fR does not\&.
+nTEST is "numerical" comparison mode\&. In this mode every number in the output is compared with the reference up to a tolerance 0\&.1\&. For a reference output \fB1 2 3\fR\&. A program which outputs \fB1\&.01 2 3\fR passes a test and one which outputs \fB1\&.11 2 3\fR does not\&.
 .SH "EXAMPLES"
 .PP
 ``atest atest\&.examples\&.sh``

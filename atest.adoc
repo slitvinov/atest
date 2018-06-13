@@ -15,14 +15,8 @@ Lets create a test for a program `atest.example.sh`
 $ ./example
 ....
 
-it outputs
-
-....
-1 2 3
-....
-
-and you want to modify './example' and make sure the output stay the
-same.
+it outputs *1 2 3* and you want to modify './example' and make sure
+the output stay the same.
 
 Create a file with a test 'test/0'
 
@@ -47,9 +41,9 @@ atest: 0/0 test(s) passed
 atest:    1 test(s) created
 ....
 
-atest created a directory 'test_data' and stored reference output into it.
+atest and stored a reference output to a directory 'test_data'. To run
+a test replace 'cTEST' by 'TEST' in 'test/0' and execute
 
-To run a test replace 'cTEST' by 'TEST' in 'test/0' and run
 ....
 $ atest test/0
 ....
@@ -62,8 +56,11 @@ atest: PASSED : 0
 atest: 1/1 test(s) passed
 ....
 
-Now if you "break" './example' and run `atest test/0` again it get
-noticed.
+Now if you "break" './example' and run
+....
+atest test/0
+....
+it get noticed.
 
 ....
 atest: 0/1 test(s) passed
@@ -74,7 +71,7 @@ atest:     0
 == DESCRIPTION
 
 A test consists of a header line and lines which are executed as a
-shell script. Empty line ends a script.
+shell script. An empty line ends a script.
 
 ....
 # TEST: name
@@ -86,7 +83,7 @@ shell script. Empty line ends a script.
 ....
 
 cTEST means "create" mode. In this mode the script updates the
-referense file.
+reference file.
 
 ....
 # cTEST: name
@@ -94,8 +91,8 @@ referense file.
 
 nTEST is "numerical" comparison mode. In this mode every number in the
 output is compared with the reference up to a tolerance 0.1. For a
-reference output '1 2 3'. A program which outputs '1.01 2 3' passes a
-test and one which outputs '1.11 2 3' does not.
+reference output *1 2 3*. A program which outputs *1.01 2 3* passes a
+test and one which outputs *1.11 2 3* does not.
 
 == EXAMPLES
 ``atest atest.examples.sh``::
