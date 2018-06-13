@@ -95,7 +95,7 @@ reference output *1 2 3*. A program which outputs *1.01 2 3* passes a
 test and one which outputs *1.11 2 3* does not.
 
 == EXAMPLES
-``atest atest.examples.sh``::
+`atest atest.examples.sh`::
   Run tests in 'atest.examples.sh'
 
 == RESOURCES
