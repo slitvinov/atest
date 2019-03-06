@@ -1,9 +1,7 @@
-#!/bin/bash
-
 # uscale - scale all numbers by `sc'
 # uscale sc [file] ...
 
-awk '
+${AWK=awk} '
 BEGIN {
     if (ARGC < 2) die("arg count")
     sc = ARGV[1]; req_number(sc); shift()
