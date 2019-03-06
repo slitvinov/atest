@@ -1,5 +1,3 @@
-#!/bin/bash
-
 # ucmp - compare two file with numbers
 # ucmp [option] file1 file2
 #
@@ -8,7 +6,7 @@
 # SEE ALSO
 #        udiff
 
-awk '
+${AWK=awk} '
 function ini() {
     eps = zerop(eps) ? 0.1 : eps
     FMT = "%f1 %f2 differ: line  %i1 (%a1 != %a2)"
