@@ -4,7 +4,9 @@
 ${AWK=awk} '
 BEGIN {
     if (ARGC < 2) die("arg count")
-    sc = ARGV[1]; req_number(sc); shift()
+    sc = ARGV[1]; shift()
+    if (!numperp(sc))
+	die("uscale: not a number : " sc)
     fmt = "%.15g"
 }
 
@@ -16,10 +18,7 @@ BEGIN {
 }
 
 function shift(  i) { for (i = 1; i < ARGC; i++) ARGV[i-1] = ARGV[i]; ARGC-- }
-function req_number(e,  float) {
-    if (e ~ /^[+-]?([0-9]+[.]?[0-9]*|[.][0-9]+)([eE][+-]?[0-9]+)?$/) return
-    die("uscale: not a number : " e)
-}
+function numperp(e) {return e == e + 0.0}
 function die(s) { print "uscale: " s | "cat 2>&1"; exit 1 }
 ' "$@"
 
