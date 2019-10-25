@@ -94,9 +94,16 @@ output is compared with the reference up to a tolerance 0.1. For a
 reference output *1 2 3*. A program which outputs *1.01 2 3* passes a
 test and one which outputs *1.11 2 3* does not.
 
+== ENVIRONMENT VARIABLES
+
+The following environment variables affect atest.  `ATEST_DIR` a
+directory with reference values, `ATEST_C` if set regenerates all
+test.
+
 == EXAMPLES
 `atest atest.examples.sh`::
   Run tests in 'atest.examples.sh'
+
 
 == RESOURCES
 git@gitlab.ethz.ch:mavt-cse/atest
