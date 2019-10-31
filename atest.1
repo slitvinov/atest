@@ -10,9 +10,6 @@ atest \- run atests
 .sp
 Lets create a test for a program \fI\&./example\fR
 .sp
-.if n \{\
-.RS 4
-.\}
 .nf
 $ \&./example
 .fi
@@ -24,34 +21,19 @@ it outputs \fB1 2 3\fR and you want to modify \fI\&./example\fR and make sure th
 .sp
 Create a file with a test \fItest/0\fR
 .sp
-.if n \{\
-.RS 4
-.\}
 .nf
 # cTEST: 0
 \&./example  > example\&.out\&.txt
 .fi
-.if n \{\
-.RE
-.\}
 .sp
 The lines after \fI# cTEST: 0\fR are executed as a script\&. The script creates a file example\&.out\&.txt which contains a "magic" pattern \fI\&.out\&.\fR\&. This pattern tells atest to consider this file as a reference output\&.
 .sp
-.if n \{\
-.RS 4
-.\}
 .nf
 $ atest test/0
 .fi
-.if n \{\
-.RE
-.\}
 .sp
 end of the output says:
 .sp
-.if n \{\
-.RS 4
-.\}
 .nf
 atest: 0/0 test(s) passed
 atest:    1 test(s) created
@@ -62,15 +44,9 @@ atest:    1 test(s) created
 .sp
 atest and stored a reference output to a directory \fItest_data\fR\&. To run a test replace \fIcTEST\fR by \fITEST\fR in \fItest/0\fR and execute
 .sp
-.if n \{\
-.RS 4
-.\}
 .nf
 $ atest test/0
 .fi
-.if n \{\
-.RE
-.\}
 .sp
 It returns
 .sp
@@ -82,42 +58,24 @@ atest: RUNNING: 0
 atest: PASSED : 0
 atest: 1/1 test(s) passed
 .fi
-.if n \{\
-.RE
-.\}
 .sp
 Now if you "break" \fI\&./example\fR and run
 .sp
-.if n \{\
-.RS 4
-.\}
 .nf
 atest test/0
 .fi
-.if n \{\
-.RE
-.\}
 .sp
 it get noticed\&.
 .sp
-.if n \{\
-.RS 4
-.\}
 .nf
 atest: 0/1 test(s) passed
 atest: failed tests:
 atest:     0
 .fi
-.if n \{\
-.RE
-.\}
 .SH DESCRIPTION
 .sp
 A test consists of a header line and lines which are executed as a shell script\&. An empty line ends a script\&.
 .sp
-.if n \{\
-.RS 4
-.\}
 .nf
 # TEST: name
 <script>
@@ -126,21 +84,12 @@ A test consists of a header line and lines which are executed as a shell script\
 
 <not a script>
 .fi
-.if n \{\
-.RE
-.\}
 .sp
 cTEST means "create" mode\&. In this mode the script updates the reference file\&.
 .sp
-.if n \{\
-.RS 4
-.\}
 .nf
 # cTEST: name
 .fi
-.if n \{\
-.RE
-.\}
 .sp
 nTEST is "numerical" comparison mode\&. In this mode every number in the output is compared with the reference up to a tolerance 0\&.1\&. For a reference output \fB1 2 3\fR\&. A program which outputs \fB1\&.01 2 3\fR passes a test and one which outputs \fB1\&.11 2 3\fR does not\&.
 .SH "ENVIRONMENT VARIABLES"
