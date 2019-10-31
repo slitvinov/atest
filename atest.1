@@ -7,101 +7,100 @@ atest \- run atests
 .I file ...
 ]
 .SH TUTORIAL
-.sp
-Lets create a test for a program \fI\&./example\fR
-.sp
-.nf
+Lets create a test for a program
+.IP
+.EX
 $ \&./example
-.fi
-.if n \{\
-.RE
-.\}
-.sp
-it outputs \fB1 2 3\fR and you want to modify \fI\&./example\fR and make sure the output stay the same\&.
-.sp
-Create a file with a test \fItest/0\fR
-.sp
-.nf
+.EE
+.PP
+it outputs '1 2 3' and you want to modify ./example and make sure the
+output stay the same. Create a file with a test test/0
+.IP
+.EX
 # cTEST: 0
-\&./example  > example\&.out\&.txt
-.fi
-.sp
-The lines after \fI# cTEST: 0\fR are executed as a script\&. The script creates a file example\&.out\&.txt which contains a "magic" pattern \fI\&.out\&.\fR\&. This pattern tells atest to consider this file as a reference output\&.
-.sp
-.nf
+\&./example  > example.out.txt
+.EE
+.PP
+The lines after '# cTEST: 0' are executed as a script. The script
+creates a file example.out.txt which contains a "magic" pattern
+.I .out.
+This pattern tells atest to consider this file as a reference output.
+.IP
+.EX
 $ atest test/0
-.fi
-.sp
+.EE
+.PP
 end of the output says:
-.sp
-.nf
+.IP
+.EX
 atest: 0/0 test(s) passed
 atest:    1 test(s) created
-.fi
-.if n \{\
-.RE
-.\}
-.sp
-atest and stored a reference output to a directory \fItest_data\fR\&. To run a test replace \fIcTEST\fR by \fITEST\fR in \fItest/0\fR and execute
-.sp
-.nf
+.EE
+.PP
+
+atest and stored a reference output to a directory test_data. To run a
+test replace cTEST by TEST in test/0\ and run
+.IP
+.EX
 $ atest test/0
-.fi
-.sp
+.EE
+.PP
 It returns
-.sp
-.if n \{\
-.RS 4
-.\}
-.nf
+.IP
+.EX
 atest: RUNNING: 0
 atest: PASSED : 0
 atest: 1/1 test(s) passed
-.fi
-.sp
-Now if you "break" \fI\&./example\fR and run
-.sp
-.nf
+.EE
+.PP
+Now if you "break" ./example and run
+.IP
+.EX
 atest test/0
-.fi
-.sp
-it get noticed\&.
-.sp
-.nf
+.EE
+.PP
+it get noticed.
+.IP
+.EX
 atest: 0/1 test(s) passed
 atest: failed tests:
 atest:     0
-.fi
+.EE
+.PP
 .SH DESCRIPTION
-.sp
-A test consists of a header line and lines which are executed as a shell script\&. An empty line ends a script\&.
-.sp
-.nf
+A test consists of a header line and lines which are executed as a shell script. An empty line ends a script.
+.IP
+.EX
 # TEST: name
 <script>
 <scirpt>
 <script>
 
 <not a script>
-.fi
-.sp
-cTEST means "create" mode\&. In this mode the script updates the reference file\&.
-.sp
-.nf
-# cTEST: name
-.fi
-.sp
-nTEST is "numerical" comparison mode\&. In this mode every number in the output is compared with the reference up to a tolerance 0\&.1\&. For a reference output \fB1 2 3\fR\&. A program which outputs \fB1\&.01 2 3\fR passes a test and one which outputs \fB1\&.11 2 3\fR does not\&.
-.SH "ENVIRONMENT VARIABLES"
-.sp
-The following environment variables affect atest\&. ATEST_DIR a directory with reference values, ATEST_C if set regenerates all test\&.
-.SH EXAMPLES
+.EE
 .PP
-atest atest\&.examples\&.sh
-.RS 4
-Run tests in
-\fIatest\&.examples\&.sh\fR
+cTEST means "create" mode. In this mode the script updates the reference file\&.
+.IP
+.EX
+# cTEST: name
+.EE
+.PP
+
+nTEST is "numerical" comparison mode. In this mode every number in
+the output is compared with the reference up to a tolerance
+0.1. For a reference output '1 2 3'. A program which outputs
+'1.01 2 3' passes a test and one which outputs '1.11 2 3'
+does not.
+
+.SH "ENVIRONMENT VARIABLES"
+The following environment variables affect atest. ATEST_DIR a directory with reference values, ATEST_C if set regenerates all test.
+.SH EXAMPLES
+.IP
+.EX
+atest atest.examples.sh
+.EE
+.PP
+Run tests in atest.examples.sh
 .RE
 .SH SOURCE
-.sp
 https://github.com/slitvinov/atest
