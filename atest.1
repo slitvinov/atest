@@ -7,20 +7,20 @@ atest \- run atests
 .I file ...
 ]
 .SH TUTORIAL
-Lets create a test for a program
-.BR ./example .
-it outputs '1 2 3' and you want to modify ./example and make sure the
-output stay the same. Create a file with a test test/0
+Lets create a test for a program `./example'.
+it outputs `1 2 3' and you want to modify `./example' and make sure the
+output stay the same. Create a file with a test `test/0'
 .IP
 .EX
 # cTEST: 0
 \&./example  > example.out.txt
 .EE
 .PP
-The lines after '# cTEST: 0' are executed as a script. The script
+The lines after `# cTEST: 0' are executed as a script. The script
 creates a file example.out.txt which contains a "magic" pattern
-.I .out.
-This pattern tells atest to consider this file as a reference output.
+`.out.'. This pattern tells
+.I atest
+to consider this file as a reference output.
 .IP
 .EX
 $ atest test/0
@@ -33,9 +33,9 @@ atest: 0/0 test(s) passed
 atest:    1 test(s) created
 .EE
 .PP
-
-atest and stored a reference output to a directory test_data. To run a
-test replace cTEST by TEST in test/0\ and run
+.I atest
+stored a reference output to the directory `test_data'. To run a
+test replace `cTEST' by `TEST' in `test/0' and execute
 .IP
 .EX
 $ atest test/0
@@ -49,7 +49,7 @@ atest: PASSED : 0
 atest: 1/1 test(s) passed
 .EE
 .PP
-Now if you "break" ./example and run
+Now if you "break" `./example' and run
 .IP
 .EX
 atest test/0
@@ -64,7 +64,8 @@ atest:     0
 .EE
 .PP
 .SH DESCRIPTION
-A test consists of a header line and lines which are executed as a shell script. An empty line ends a script.
+A test consists of a header line and lines which are executed as a
+shell script. An empty line ends a script.
 .IP
 .EX
 # TEST: name
@@ -75,7 +76,7 @@ A test consists of a header line and lines which are executed as a shell script.
 <not a script>
 .EE
 .PP
-cTEST means "create" mode. In this mode the script updates the reference file\&.
+cTEST means "create" mode. In this mode the script updates the reference file.
 .IP
 .EX
 # cTEST: name
@@ -83,12 +84,15 @@ cTEST means "create" mode. In this mode the script updates the reference file\&.
 .PP
 nTEST is "numerical" comparison mode. In this mode every number in
 the output is compared with the reference up to a tolerance
-0.1. For a reference output '1 2 3'. A program which outputs
-'1.01 2 3' passes a test and one which outputs '1.11 2 3'
+0.1. For a reference output `1 2 3'. A program which outputs
+`1.01 2 3' passes a test and one which outputs `1.11 2 3'
 does not.
 .SH "ENVIRONMENT VARIABLES"
-The following environment variables affect atest. ATEST_DIR a
-directory with reference values, ATEST_C if set regenerates all test.
+The following environment variables affect `atest'.
+.B ATEST_DIR
+a directory with the reference values, if
+.B ATEST_C
+is set re-create all then test.
 .SH EXAMPLES
 .IP
 .EX
