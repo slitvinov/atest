@@ -8,11 +8,7 @@ atest \- run atests
 ]
 .SH TUTORIAL
 Lets create a test for a program
-.IP
-.EX
-$ \&./example
-.EE
-.PP
+.BR ./example .
 it outputs '1 2 3' and you want to modify ./example and make sure the
 output stay the same. Create a file with a test test/0
 .IP
@@ -85,15 +81,14 @@ cTEST means "create" mode. In this mode the script updates the reference file\&.
 # cTEST: name
 .EE
 .PP
-
 nTEST is "numerical" comparison mode. In this mode every number in
 the output is compared with the reference up to a tolerance
 0.1. For a reference output '1 2 3'. A program which outputs
 '1.01 2 3' passes a test and one which outputs '1.11 2 3'
 does not.
-
 .SH "ENVIRONMENT VARIABLES"
-The following environment variables affect atest. ATEST_DIR a directory with reference values, ATEST_C if set regenerates all test.
+The following environment variables affect atest. ATEST_DIR a
+directory with reference values, ATEST_C if set regenerates all test.
 .SH EXAMPLES
 .IP
 .EX
