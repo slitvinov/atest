@@ -2,9 +2,11 @@
 .SH NAME
 atest \- run atests
 .SH SYNOPSIS
-.sp
-\fBatest\fR [\fIFILE\fR]\&.\&.
-.SH "TUTORIAL"
+.B atest
+[
+.I file ...
+]
+.SH TUTORIAL
 .sp
 Lets create a test for a program \fI\&./example\fR
 .sp
@@ -109,7 +111,7 @@ atest:     0
 .if n \{\
 .RE
 .\}
-.SH "DESCRIPTION"
+.SH DESCRIPTION
 .sp
 A test consists of a header line and lines which are executed as a shell script\&. An empty line ends a script\&.
 .sp
@@ -144,13 +146,13 @@ nTEST is "numerical" comparison mode\&. In this mode every number in the output 
 .SH "ENVIRONMENT VARIABLES"
 .sp
 The following environment variables affect atest\&. ATEST_DIR a directory with reference values, ATEST_C if set regenerates all test\&.
-.SH "EXAMPLES"
+.SH EXAMPLES
 .PP
 atest atest\&.examples\&.sh
 .RS 4
 Run tests in
 \fIatest\&.examples\&.sh\fR
 .RE
-.SH "RESOURCES"
+.SH SOURCE
 .sp
-git@gitlab\&.ethz\&.ch:mavt\-cse/atest
+https://github.com/slitvinov/atest
