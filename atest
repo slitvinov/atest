@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 : ${AWK=awk}
 
@@ -6,7 +6,7 @@ me=atest
 usg () {
     msg "$me [FILE].."
     msg "run atests in [FILE].."
-    exit(1)
+    exit 1
 }
 
 msg () { echo >&2 "$@" ; }
@@ -98,7 +98,8 @@ function run(out) {
 function create(out) {
     cTest(out)
     msg("CREATING: " NAME "\n\n" BODY)
-    exec() # TODO: check if ref was created
+    if (exec() != 0)
+       err("fail to create a test")
     icreated++
 }
 
@@ -176,4 +177,5 @@ END {
 function q(s)    { return "\"" s "\"" }
 function exec()  { return system(BODY) }
 function msg(s) { printf "atest: %s\n", s | "cat >&2" }
+function err(s) { msg(s); exit(2) }
 ' "$@"
