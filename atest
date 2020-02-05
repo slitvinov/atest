@@ -99,8 +99,7 @@ function run(out) {
 function create(out) {
     cTest(out)
     msg("CREATING: " NAME "\n\n" BODY)
-    if (exec() != 0)
-       err("fail to create a test")
+    exec()
     icreated++
 }
 
