@@ -32,7 +32,7 @@ BEGIN {
 
 function mkdir(d,   c) {
     c = sprintf("mkdir -p %s", d)
-    system(c)
+    return system(c)
 }
 
 function emptyp(s) { return s ~ /^[ \t]*$/ }
