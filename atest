@@ -21,7 +21,7 @@ done
 
 "$AWK" '
 BEGIN {
-    PWD=ENVIRON["PWD"]
+    PWD = ENVIRON["PWD"]
     if ("ATEST_DIR" in ENVIRON)
         RDIR= ENVIRON["ATEST_DIR"]
     else
@@ -115,7 +115,6 @@ function out2ref(s) {
     sub(d "out" d,   ".ref." NAME ".",    s)
     return PWD "/" RDIR "/" s
 }
-
 
 function cp(A, B,  cmd) {
     cmd = sprintf("cp -- %s %s\n", q(A), q(B))
