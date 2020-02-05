@@ -26,12 +26,13 @@ BEGIN {
         RDIR= ENVIRON["ATEST_DIR"]
     else
         RDIR = "test_data"
-    mkdir(RDIR)
+    if (mkdir(RDIR) != 0)
+       err("fail to create directory: " RDIR)
     ipass = ifail = icreated = 0 # counters
 }
 
 function mkdir(d,   c) {
-    c = sprintf("mkdir -p %s", d)
+    c = sprintf("mkdir -p %s", q(d))
     return system(c)
 }
 
@@ -170,12 +171,15 @@ function summary(  i) {
 
 { set_line(NR,   FNR, $0) }
 END {
-    process_all() # extract and run all tests
-    summary()
+    if (!ERR) {
+        process_all()
+        summary()
+    } else
+      exit(ERR)
 }
 
 function q(s)    { return "\"" s "\"" }
 function exec()  { return system(BODY) }
 function msg(s) { printf "atest: %s\n", s | "cat >&2" }
-function err(s) { msg(s); exit(2) }
+function err(s) { msg(s); ERR = 1; exit(ERR) }
 ' "$@"
