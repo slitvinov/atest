@@ -1,7 +1,6 @@
 #!/bin/bash
 
 : ${AWK=awk}
-: ${LOG=0}
 
 me=atest
 usg () {
