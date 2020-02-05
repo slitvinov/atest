@@ -7,7 +7,7 @@ me=atest
 usg () {
     msg "$me [FILE].."
     msg "run atests in [FILE].."
-    exit
+    exit(1)
 }
 
 msg () { echo >&2 "$@" ; }
